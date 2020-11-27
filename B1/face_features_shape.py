@@ -115,13 +115,14 @@ def extract_features_labels(basedir,images_dir):
     target_size = None
     labels_file = open(os.path.join(basedir, labels_filename), 'r')
     lines = labels_file.readlines()
-    gender_labels = {line.split('\t')[0] : int(line.split('\t')[3]) for line in lines[1:]}
+    gender_labels = {line.split('\t')[0] : int(line.split('\t')[2]) for line in lines[1:]}
     if os.path.isdir(images_dir):
         all_features = []
         all_labels = []
         for img_path in image_paths:
             file_name= re.split('[\\\/]',img_path)[-1].split('.')[0]
-
+            #print(len(all_features)/10000*100)
+            print(len(all_features)/500*100)
             # load image
             img = image.img_to_array(
                 image.load_img(img_path,
@@ -131,18 +132,20 @@ def extract_features_labels(basedir,images_dir):
             if features is not None:
                 all_features.append(features)
                 all_labels.append(gender_labels[file_name])
-                print("Detection")
 
                 #Use for viewing image with features
-                
+                '''
                 if(file_name=="1000"):
                     win=dlib.image_window()
                     win.clear_overlay()
                     win.set_image(annotate_landmarks(cv2.imread(img_path),features))
                     dlib.hit_enter_to_continue()
+                '''
                 
 
     landmark_features = np.array(all_features)
-    gender_labels = (np.array(all_labels) + 1)/2 # simply converts the -1 into 0, so not smiling=0 and smiling=1
+    #gender_labels = (np.array(all_labels) + 1)/2 # simply converts the -1 into 0, so not smiling=0 and smiling=1
+    gender_labels = np.array(all_labels) # simply converts the -1 into 0, so not smiling=0 and smiling=1
+    # Faceshapes are 0 1 2 3 4
     return landmark_features, gender_labels
 

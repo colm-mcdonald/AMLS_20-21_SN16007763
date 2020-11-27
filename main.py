@@ -45,7 +45,7 @@ print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
 acc_A2_train=None
 acc_A2_test=None
 
-model_A2 = A2()
+#model_A2 = A2()
 '''
 best_accuracy=0
 for i in range(1,9):
@@ -65,18 +65,37 @@ print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
 # ======================================================================================================================
 # Task B1
 #TODO
-model_B1 = B1("args...")
-acc_B1_train = model_B1.train("args...")
-acc_B1_test = model_B1.test("args...")
+
+acc_B1_train=None
+acc_B1_test=None
+
+#model_B1 = B1()
+'''
+best_accuracy=0
+for i in range(9,15):
+	acc_B1_train = model_B1.train(i)
+	acc_B1_test = model_B1.test()
+	if(acc_B1_test>best_accuracy):
+		best_accuracy=acc_B1_test
+		best_param=i
+print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
+'''
+#acc_B1_train = model_B1.train(None)
+#acc_B1_test = model_B1.test()
+
 #Clean up memory/GPU etc...
 
 
 # ======================================================================================================================
 # Task B2
 #TODO
+acc_B2_train = None
+acc_B2_test = None
+'''
 model_B2 = B2("args...")
 acc_B2_train = model_B2.train("args...")
 acc_B2_test = model_B2.test("args...")
+'''
 #Clean up memory/GPU etc...
 
 

@@ -8,6 +8,7 @@ from sklearn.metrics import classification_report,accuracy_score
 from sklearn import svm
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
+import os
 
 class A1():
 	classifier=None
@@ -19,9 +20,14 @@ class A1():
 	
 	def __getData(self):
 		print("Getting Data")
-		X, y = face_features.extract_features_labels("./Datasets/celeba","img")
-		#print("Got Data")
-		Y = np.array([y, -(y-1)]).T
+		if(not os.path.isfile('a1_input.npy') or not os.path.isfile('a1_output.npy')):
+			X, y = face_features.extract_features_labels("./Datasets/celeba","img")
+			Y = np.array([y, -(y-1)]).T
+			np.save('a1_input',X)
+			np.save('a1_output',Y)
+		else:
+			X=np.load('a1_input.npy')
+			Y=np.load('a1_output.npy')
 
 		'''
 		#0.02:0.98 Training:Testing
