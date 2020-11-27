@@ -17,19 +17,48 @@ def data_preprocessing(args):
 data_train, data_val, data_test = data_preprocessing("args...")
 # ======================================================================================================================
 # Task A1
-#TODO
-model_A1 = A1("args...")                 # Build model object.
-acc_A1_train = model_A1.train("args...") # Train model based on the training set (you should fine-tune your model based on validation set.)
-acc_A1_test = model_A1.test("args...")   # Test model based on the test set.
+acc_A1_train=None
+acc_A1_test=None
+
+#model_A1 = A1()                 # Build model object.
+'''
+best_accuracy=0
+for i in range(1,20):
+	print(i)
+	acc_A1_train = model_A1.train(i) # Train model based on the training set (you should fine-tune your model based on validation set.)
+	acc_A1_test = model_A1.test()   # Test model based on the test set.
+	if(acc_A1_test>best_accuracy):
+		best_accuracy=acc_A1_test
+		best_param=i
+print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
+'''
+
+#acc_A1_train = model_A1.train(None)
+#acc_A1_test = model_A1.test()
+
 #Clean up memory/GPU etc...             # Some code to free memory if necessary.
 
 
 # ======================================================================================================================
 # Task A2
 #TODO
-model_A2 = A2("args...")
-acc_A2_train = model_A2.train("args...")
-acc_A2_test = model_A2.test("args...")
+acc_A2_train=None
+acc_A2_test=None
+
+model_A2 = A2()
+'''
+best_accuracy=0
+for i in range(1,9):
+	acc_A2_train = model_A2.train(i)
+	acc_A2_test = model_A2.test()
+	if(acc_A2_test>best_accuracy):
+		best_accuracy=acc_A2_test
+		best_param=i
+print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
+'''
+
+#acc_A2_train = model_A2.train(None)
+#acc_A2_test = model_A2.test()
 #Clean up memory/GPU etc...
 
 
