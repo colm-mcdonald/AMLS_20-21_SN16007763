@@ -91,11 +91,11 @@ print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
 #TODO
 acc_B2_train = None
 acc_B2_test = None
-'''
-model_B2 = B2("args...")
-acc_B2_train = model_B2.train("args...")
-acc_B2_test = model_B2.test("args...")
-'''
+
+model_B2 = B2()
+acc_B2_train = model_B2.train(None)
+acc_B2_test = model_B2.test()
+
 #Clean up memory/GPU etc...
 
 
