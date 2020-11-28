@@ -20,7 +20,7 @@ data_train, data_val, data_test = data_preprocessing("args...")
 acc_A1_train=None
 acc_A1_test=None
 
-#model_A1 = A1()                 # Build model object.
+model_A1 = A1()                 # Build model object.
 '''
 best_accuracy=0
 for i in range(1,20):
@@ -33,8 +33,8 @@ for i in range(1,20):
 print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
 '''
 
-#acc_A1_train = model_A1.train(None)
-#acc_A1_test = model_A1.test()
+acc_A1_train = model_A1.train(None)
+acc_A1_test = model_A1.test()
 
 #Clean up memory/GPU etc...             # Some code to free memory if necessary.
 
@@ -45,7 +45,7 @@ print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
 acc_A2_train=None
 acc_A2_test=None
 
-#model_A2 = A2()
+model_A2 = A2()
 '''
 best_accuracy=0
 for i in range(1,9):
@@ -57,8 +57,8 @@ for i in range(1,9):
 print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
 '''
 
-#acc_A2_train = model_A2.train(None)
-#acc_A2_test = model_A2.test()
+acc_A2_train = model_A2.train(None)
+acc_A2_test = model_A2.test()
 #Clean up memory/GPU etc...
 
 
@@ -69,7 +69,7 @@ print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
 acc_B1_train=None
 acc_B1_test=None
 
-#model_B1 = B1()
+model_B1 = B1()
 '''
 best_accuracy=0
 for i in range(9,15):
@@ -80,8 +80,8 @@ for i in range(9,15):
 		best_param=i
 print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
 '''
-#acc_B1_train = model_B1.train(None)
-#acc_B1_test = model_B1.test()
+acc_B1_train = model_B1.train(None)
+acc_B1_test = model_B1.test()
 
 #Clean up memory/GPU etc...
 
@@ -93,6 +93,18 @@ acc_B2_train = None
 acc_B2_test = None
 
 model_B2 = B2()
+
+'''
+best_accuracy=0
+for i in range(1,15):
+	acc_B2_train = model_B2.train(i)
+	acc_B2_test = model_B2.test()
+	if(acc_B2_test>best_accuracy):
+		best_accuracy=acc_B2_test
+		best_param=i
+print("Best parameter is",best_param,"with an accuracy of",best_accuracy*100)
+'''
+
 acc_B2_train = model_B2.train(None)
 acc_B2_test = model_B2.test()
 

@@ -25,16 +25,6 @@ predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 #     300 faces In-the-wild challenge: Database and results.
 #     Image and Vision Computing (IMAVIS), Special Issue on Facial Landmark Localisation "In-The-Wild". 2016.
 
-'''
-      Facial features
-    ------------------
-    Left eyebrow 18-22
-    Right eyebrow 23-27
-    Left eye 37-42
-    Right eye 43-48
-
-'''
-
 #Use for viewing image with features (from https://stackoverflow.com/questions/37665725/how-to-overlay-facial-keypoints-from-dlib-in-an-opencv-window)
 def annotate_landmarks(image, landmarks):
     image=image.copy()
@@ -45,16 +35,38 @@ def annotate_landmarks(image, landmarks):
         cv2.circle(image, pos,3,color=(0,255,255))
     return image
 
+'''
+      Facial features
+    ------------------
+    Left eyebrow 18-22
+    Right eyebrow 23-27
+    Left eye 37-42
+    Right eye 43-48
+
+'''
+
 def crop_eye(image, landmarks, eye_side):
     image=image.copy()
     if(eye_side=="right"):
-        eye=np.vstack((landmarks[23:27],landmarks[43:48]))
+        #eye=np.vstack((landmarks[23:27],landmarks[43:48]))
+        eye=landmarks[43:48]
     else:
-        eye=np.vstack((landmarks[18:22],landmarks[37:42]))
+        #eye=np.vstack((landmarks[18:22],landmarks[37:42]))
+        eye=landmarks[37:42]
     min_eye=np.min(eye,axis=0)
     max_eye=np.max(eye,axis=0)
     cropped_image=image[min_eye[1]:max_eye[1],min_eye[0]:max_eye[0]]
     return cropped_image
+
+def image_histogram(image,size):
+    red,_=np.histogram(image[:,:,0],bins=size)
+    green,_=np.histogram(image[:,:,1],bins=size)
+    blue,_=np.histogram(image[:,:,2],bins=size)
+
+    #print("Red",red)
+    #print("Green",green)
+    #print("Blue",blue)
+    return red,green,blue
 
 def shape_to_np(shape, dtype="int"):
     # initialize the list of (x, y)-coordinates
@@ -135,7 +147,7 @@ def extract_features_labels(basedir,images_dir):
     target_size = None
     labels_file = open(os.path.join(basedir, labels_filename), 'r')
     lines = labels_file.readlines()
-    gender_labels = {line.split('\t')[0] : int(line.split('\t')[2]) for line in lines[1:]}
+    gender_labels = {line.split('\t')[0] : int(line.split('\t')[1]) for line in lines[1:]}
     if os.path.isdir(images_dir):
         all_features = []
         all_labels = []
@@ -153,16 +165,20 @@ def extract_features_labels(basedir,images_dir):
             if features is not None:
                 left_eye=crop_eye(cv2.imread(img_path),features,'left')
                 right_eye=crop_eye(cv2.imread(img_path),features,'right')
+                '''
                 left_eye_window=dlib.image_window()
                 left_eye_window.set_image(left_eye)
 
                 right_eye_window=dlib.image_window()
                 right_eye_window.set_image(right_eye)
                 
+                #image_histogram(right_eye,256)
                 right_eye_window.wait_until_closed()
                 left_eye_window.wait_until_closed()
-                
-                all_features.append(features)
+                '''
+                red,green,blue=image_histogram(left_eye,50)
+                #all_features.append(features)
+                all_features.append(np.vstack((red,green,blue)))
                 all_labels.append(gender_labels[file_name])
 
                 #Use for viewing image with features
