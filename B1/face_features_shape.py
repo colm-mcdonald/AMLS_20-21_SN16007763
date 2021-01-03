@@ -122,7 +122,7 @@ def extract_features_labels(basedir,images_dir):
         for img_path in image_paths:
             file_name= re.split('[\\\/]',img_path)[-1].split('.')[0]
             #print(len(all_features)/10000*100)
-            print(len(all_features)/10000*100)
+            #print(len(all_features)/10000*100)
             # load image
             img = image.img_to_array(
                 image.load_img(img_path,

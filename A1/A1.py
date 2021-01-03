@@ -8,15 +8,17 @@ from sklearn.metrics import classification_report,accuracy_score
 from sklearn import svm
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import learning_curve
+from sklearn.model_selection import train_test_split
 import os
 
 class A1():
 	classifier=None
 	global tr_X, tr_Y, te_X, te_Y
+	global full_X, full_Y
 	def __init__(self):
 		print("Initializing A1")
 		self.__getData()
-		#print("Initialized A1")
 	
 	def __getData(self):
 		print("Getting Data")
@@ -29,19 +31,11 @@ class A1():
 			X=np.load('a1_input.npy')
 			Y=np.load('a1_output.npy')
 
-		'''
-		#0.02:0.98 Training:Testing
-		self.tr_X = X[:100]
-		self.tr_Y = Y[:100]
-		self.te_X = X[100:]
-		self.te_Y = Y[100:]
-		'''
 		
 		#0.7:0.3 Training:Testing
-		self.tr_X = X[:3500]
-		self.tr_Y = Y[:3500]
-		self.te_X = X[3500:]
-		self.te_Y = Y[3500:]
+		self.full_X=X
+		self.full_Y=Y
+		self.tr_X, self.te_X, self.tr_Y, self.te_Y = train_test_split(X,Y,test_size=0.3,random_state=1)
 	
 	def train(self, args):
 		"""
@@ -65,13 +59,38 @@ class A1():
 		#self.classifier=KNeighborsClassifier(n_neighbors=3)  # Training 3,500=69.6%
 
 		self.classifier.fit(self.tr_X.reshape((len(self.tr_X), 68*2)), list(zip(*self.tr_Y))[0])
-		#print("Trained with hidden layer size of", args)
 		pred=self.classifier.predict(self.tr_X.reshape((len(self.tr_X), 68*2)))
 		return accuracy_score(list(zip(*self.tr_Y))[0],pred)
+	
+	def training_curve(self):
+		X=self.full_X
+		Y=self.full_Y
+		print("Creating Training Curve...")
+		train_sizes, train_scores, valid_scores = learning_curve(
+			svm.SVC(kernel='poly',degree=4,C=1.0),X.reshape((len(X), 68*2)), list(zip(*Y))[0],
+			train_sizes=[np.linspace(0.1,1,6)])
+		print("Train Sizes:")
+		print(train_sizes)
+
+		print("Train Scores:")
+		print(train_scores)
+
+		print("Validation Scores:")
+		print(valid_scores)
+
 	
 	def test(self):
 		print("Testing")
 		pred=self.classifier.predict(self.te_X.reshape((len(self.te_X), 68*2)))
 		accuracy=accuracy_score(list(zip(*self.te_Y))[0],pred)
-		print("Accuracy:",accuracy)
+		print("Verification Accuracy:",accuracy)
+		return accuracy
+
+	def final_test(self):
+		X, y = face_features.extract_features_labels("./Datasets/celeba_test","img")
+		Y = np.array([y, -(y-1)]).T
+
+		pred=self.classifier.predict(X.reshape((len(X),68*2)))
+		accuracy=accuracy_score(list(zip(*Y))[0],pred)
+		print("Test Accuracy:",accuracy)
 		return accuracy
